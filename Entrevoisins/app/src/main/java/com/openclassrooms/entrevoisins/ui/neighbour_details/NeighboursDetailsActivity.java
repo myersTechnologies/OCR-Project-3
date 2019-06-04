@@ -18,10 +18,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.entrevoisins.R;
 import com.openclassrooms.entrevoisins.di.DI;
-import com.openclassrooms.entrevoisins.model.FavoriteNeighbour;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.ListNeighbourActivity;
+
+import java.util.List;
 
 
 public class NeighboursDetailsActivity extends AppCompatActivity {
@@ -32,12 +33,13 @@ public class NeighboursDetailsActivity extends AppCompatActivity {
     private NeighbourApiService mApiService;
     private Neighbour neighbour;
     private RecyclerView neighbourInfoRView, aboutNeighboursRView;
-
+    private List<Neighbour> favoriteNeighbourList;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_neighbours_details);
         mApiService = DI.getNeighbourApiService();
+        favoriteNeighbourList = mApiService.getFavorites();
         getNeighbour();
         setViews();
         setToolbar();
@@ -77,15 +79,19 @@ public class NeighboursDetailsActivity extends AppCompatActivity {
     }
 
     public void addToFavorites(){
-        addToFavorites.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                FavoriteNeighbour favoriteNeighbour = new FavoriteNeighbour(neighbour);
-                mApiService.addFavoriteNeighbour(favoriteNeighbour);
-                Toast.makeText(getApplicationContext(), "Added to Favorites", Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
+                    addToFavorites.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (!mApiService.getFavorites().contains(neighbour)) {
+                                mApiService.addFavoriteNeighbour(neighbour);
+                                Toast.makeText(getApplicationContext(), "Added to favorites", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getApplicationContext(), "Already in favorites", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                }
+
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

@@ -12,10 +12,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.openclassrooms.entrevoisins.events.DeleteFavoriteEvent;
+import com.openclassrooms.entrevoisins.events.DetailsActivityEvent;
 import com.openclassrooms.entrevoisins.events.FavoritesDetailsEvent;
-import com.openclassrooms.entrevoisins.model.FavoriteNeighbour;
 
 import com.openclassrooms.entrevoisins.R;
+import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.ui.neighbour_details.NeighboursDetailsActivity;
 
 import org.greenrobot.eventbus.EventBus;
@@ -26,9 +27,9 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class MyFavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter<MyFavoriteNeighbourRecyclerViewAdapter.ViewHolder> {
-    private List<FavoriteNeighbour> favoriteNeighbours;
+    private List<Neighbour> favoriteNeighbours;
 
-    public MyFavoriteNeighbourRecyclerViewAdapter(List<FavoriteNeighbour> favoriteNeighbours){
+    public MyFavoriteNeighbourRecyclerViewAdapter(List<Neighbour> favoriteNeighbours){
         this.favoriteNeighbours = favoriteNeighbours;
     }
 
@@ -41,7 +42,7 @@ public class MyFavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter
 
     @Override
     public void onBindViewHolder(final MyFavoriteNeighbourRecyclerViewAdapter.ViewHolder viewHolder, int position) {
-        FavoriteNeighbour favoriteNeighbour = favoriteNeighbours.get(position);
+        Neighbour favoriteNeighbour = favoriteNeighbours.get(position);
         viewHolder.mNeighbourName.setText(favoriteNeighbour.getName());
         Glide.with(viewHolder.mNeighbourAvatar.getContext())
                 .load(favoriteNeighbour.getAvatarUrl())
@@ -50,7 +51,7 @@ public class MyFavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter
         viewHolder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new FavoritesDetailsEvent(favoriteNeighbour));
+                EventBus.getDefault().post(new DetailsActivityEvent(favoriteNeighbour));
                 Intent intent = new Intent(viewHolder.itemView.getContext(), NeighboursDetailsActivity.class);
                 viewHolder.itemView.getContext().startActivity(intent);
             }
@@ -58,7 +59,7 @@ public class MyFavoriteNeighbourRecyclerViewAdapter extends RecyclerView.Adapter
         viewHolder.mDeleteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                EventBus.getDefault().post(new DeleteFavoriteEvent(favoriteNeighbour));
+                //EventBus.getDefault().post(new DeleteFavoriteEvent(favoriteNeighbour));
             }
         });
     }

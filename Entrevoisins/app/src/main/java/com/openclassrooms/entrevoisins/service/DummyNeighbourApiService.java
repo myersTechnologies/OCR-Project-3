@@ -3,9 +3,9 @@ package com.openclassrooms.entrevoisins.service;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.widget.Toast;
 
 import com.openclassrooms.entrevoisins.di.DI;
-import com.openclassrooms.entrevoisins.model.FavoriteNeighbour;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.ui.neighbour_details.NeighboursDetailsActivity;
 import com.openclassrooms.entrevoisins.ui.neighbour_list.MyNeighbourRecyclerViewAdapter;
@@ -21,11 +21,9 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
 
     private List<Neighbour> neighbours = DummyNeighbourGenerator.generateNeighbours();
 
-    private List<FavoriteNeighbour> favoriteNeighbours;
+    private List<Neighbour> favoriteNeighbours;
 
     private Neighbour neighbour;
-
-    private FavoriteNeighbour favoriteNeighbour;
 
 
     /**
@@ -42,6 +40,11 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     @Override
     public void deleteNeighbour(Neighbour neighbour) {
         neighbours.remove(neighbour);
+            for (int j = 0; j < favoriteNeighbours.size(); j++){
+                if (neighbour.getName().compareTo(favoriteNeighbours.get(j).getName()) == 0){
+                    favoriteNeighbours.remove(favoriteNeighbours.get(j));
+                }
+            }
     }
 
     /**
@@ -59,7 +62,7 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
 
 
     @Override
-    public List<FavoriteNeighbour> getFavorites() {
+    public List<Neighbour> getFavorites() {
         if (favoriteNeighbours == null){
             favoriteNeighbours = new ArrayList<>();
         }
@@ -67,31 +70,26 @@ public class DummyNeighbourApiService implements  NeighbourApiService {
     }
 
     @Override
-    public void deleteFavoriteNeighbour(FavoriteNeighbour favoriteNeighbour) {
+    public void deleteFavoriteNeighbour(Neighbour favoriteNeighbour) {
         favoriteNeighbours.remove(favoriteNeighbour);
     }
 
     @Override
-    public void addFavoriteNeighbour(FavoriteNeighbour favoriteNeighbour) {
-        if (favoriteNeighbours == null){
-            favoriteNeighbours = new ArrayList<>();
-        }
-        favoriteNeighbours.add(favoriteNeighbour);
-        this.favoriteNeighbour = favoriteNeighbour;
-    }
-
-    @Override
-    public void setFavoriteToShowInDetails(FavoriteNeighbour favoriteNeighbour) {
-        int id = favoriteNeighbour.getId();
-        String name = favoriteNeighbour.getName();
-        String pic = favoriteNeighbour.getAvatarUrl();
-        Neighbour neighbour = new Neighbour(id, name, pic);
+    public void addFavoriteNeighbour(Neighbour neighbour) {
+        favoriteNeighbours.add(neighbour);
         this.neighbour = neighbour;
+
+    }
+
+
+    @Override
+    public void setFavoriteToShowInDetails(Neighbour favoriteNeighbour) {
+        this.neighbour = favoriteNeighbour;
     }
 
     @Override
-    public FavoriteNeighbour getFavoriteNeighbour() {
-        return favoriteNeighbour;
+    public Neighbour getFavoriteNeighbour() {
+        return neighbour;
     }
 
 

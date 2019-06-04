@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.widget.TextView;
 
 import com.openclassrooms.entrevoisins.di.DI;
-import com.openclassrooms.entrevoisins.model.FavoriteNeighbour;
 import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.ui.neighbour_details.NeighboursDetailsActivity;
 
@@ -29,13 +28,14 @@ public class NeighbourServiceTest {
 
     private NeighbourApiService service;
     private Neighbour neighbourToCheck;
-    FavoriteNeighbour favoriteNeighbour;
+    private Neighbour favoriteNeighbour;
 
     @Before
     public void setup() {
         service = DI.getNewInstanceApiService();
         neighbourToCheck = service.getNeighbours().get(0);
-        favoriteNeighbour = new FavoriteNeighbour(neighbourToCheck);
+        favoriteNeighbour = service.getNeighbours().get(1);
+        service.getFavorites();
         service.addFavoriteNeighbour(favoriteNeighbour);
     }
 
@@ -47,10 +47,11 @@ public class NeighbourServiceTest {
     }
 
     @Test
-    public void deleteNeighbourWithSuccess() {
+    public void deleteNeighbourAndFavoriteNeighbourWithSuccess() {
         Neighbour neighbourToDelete = service.getNeighbours().get(0);
         service.deleteNeighbour(neighbourToDelete);
         assertFalse(service.getNeighbours().contains(neighbourToDelete));
+        assertFalse(service.getFavorites().contains(neighbourToDelete));
     }
 
     @Test
@@ -64,9 +65,16 @@ public class NeighbourServiceTest {
 
     @Test
     public void addNeighbourToFavorites(){
-        List<FavoriteNeighbour> favorites = service.getFavorites();
-        favorites.add(favoriteNeighbour);
-        assertTrue(favorites.contains(favoriteNeighbour));
+        Neighbour favorite = service.getNeighbours().get(1);
+        service.addFavoriteNeighbour(favorite);
+        assertTrue(service.getFavorites().contains(favorite));
+    }
+
+    @Test
+    public void checkIfFavoriteNeighbourIsAlreadyAdded(){
+        List<Neighbour> favorites = service.getFavorites();
+        service.addFavoriteNeighbour(favorites.get(0));
+        assertEquals(favoriteNeighbour, favorites.get(0));
     }
 
     @Test

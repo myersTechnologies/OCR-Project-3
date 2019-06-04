@@ -1,12 +1,13 @@
 package com.openclassrooms.entrevoisins.events;
 
-import com.openclassrooms.entrevoisins.model.FavoriteNeighbour;
+
+import com.openclassrooms.entrevoisins.model.Neighbour;
 
 public class DeleteFavoriteEvent {
 
-    public FavoriteNeighbour favoriteNeighbour;
+    public Neighbour neighbour;
 
-    public DeleteFavoriteEvent(FavoriteNeighbour favoriteNeighbour){
-        this.favoriteNeighbour = favoriteNeighbour;
+    public DeleteFavoriteEvent(Neighbour neighbour){
+        this.neighbour= neighbour;
     }
 }

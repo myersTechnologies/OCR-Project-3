@@ -16,7 +16,7 @@ import com.openclassrooms.entrevoisins.di.DI;
 import com.openclassrooms.entrevoisins.events.DeleteFavoriteEvent;
 import com.openclassrooms.entrevoisins.events.DetailsActivityEvent;
 import com.openclassrooms.entrevoisins.events.FavoritesDetailsEvent;
-import com.openclassrooms.entrevoisins.model.FavoriteNeighbour;
+import com.openclassrooms.entrevoisins.model.Neighbour;
 import com.openclassrooms.entrevoisins.service.NeighbourApiService;
 
 import org.greenrobot.eventbus.EventBus;
@@ -28,7 +28,7 @@ public class FavoritesFragment extends Fragment {
 
     private RecyclerView mFavoritesRecyclerView;
     private NeighbourApiService mFavoriteNeighbourApi;
-    private List<FavoriteNeighbour> mFavoriteNeighbourList;
+    private List<Neighbour> mFavoriteNeighbourList;
     MyFavoriteNeighbourRecyclerViewAdapter rViewAdapter;
 
     public static FavoritesFragment newInstance() {
@@ -40,7 +40,6 @@ public class FavoritesFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         mFavoriteNeighbourApi = DI.getNeighbourApiService();
-
     }
 
     @Override
@@ -64,6 +63,7 @@ public class FavoritesFragment extends Fragment {
         rViewAdapter.notifyDataSetChanged();
         super.onResume();
     }
+
     @Override
     public void onStart() {
         super.onStart();
@@ -78,13 +78,23 @@ public class FavoritesFragment extends Fragment {
 
     @Subscribe
     public void onDeleteFavoriteNeighbour(DeleteFavoriteEvent event) {
-        mFavoriteNeighbourApi.deleteFavoriteNeighbour(event.favoriteNeighbour);
+        mFavoriteNeighbourApi.deleteFavoriteNeighbour(event.neighbour);
         initFavoritesList();
     }
 
     @Subscribe
     public void onStartDetailsActivity(FavoritesDetailsEvent event){
         mFavoriteNeighbourApi.setFavoriteToShowInDetails(event.favoriteNeighbour);
+    }
+
+    @Override
+    public void setUserVisibleHint(boolean isVisibleToUser) {
+        super.setUserVisibleHint(isVisibleToUser);
+        if (isVisibleToUser) {
+            getFragmentManager().beginTransaction().attach(this).commit();
+        } else {
+            getFragmentManager().beginTransaction().detach(this).commit();
+        }
     }
 }
 
