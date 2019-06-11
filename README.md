@@ -5,7 +5,8 @@ Comment exécuter et compiler le projet:
 
 Click sur clone or download et copier le lien fourni.
 
-[](Images/liencopier.png)
+https://github.com/myersTechnologies/OCR-Project-3/blob/master/Images/liencopier.png
+
 
 Ouvrez le cmd
 
