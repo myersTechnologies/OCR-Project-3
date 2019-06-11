@@ -44,7 +44,7 @@ La fenêtre suivante vous permet de définir le framework, clickez sur ok
 
 ![](Images/framework.png)
 
-et voilà le projet devrait être charger avec succées
+et voilà le projet devrait ce charger avec succées
 
 ![](Images/success.png)
 
