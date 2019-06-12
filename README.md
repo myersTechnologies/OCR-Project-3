@@ -14,11 +14,11 @@ Poisitionnez vous sur le dossier contenant vos projets Android Studio.
 
 ![](Images/dossierparent.png)
 
-Clonnez le repository à l'aide la commande:
+Clonez le repository à l'aide la commande:
 
 ![](Images/gitclone.png)
 
-Si le clonnage est réussi un message de réussite devrait s'afficher.
+Si le clonage est réussi un message de réussite devrait s'afficher.
 
 ![](Images/reussi.png)
 
